@@ -3,7 +3,7 @@ import pickle
 import pandas as pd
 
 # Use pickle to load in the pre-trained model.
-with open(f'model/bike_model_xgboost.pkl', 'rb') as f:
+with open(f'model/bike_model_rf.pkl', 'rb') as f:
     model = pickle.load(f)
 
 app = flask.Flask(__name__, template_folder='templates')
