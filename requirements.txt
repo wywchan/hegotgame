@@ -1,0 +1,5 @@
+python
+flask
+pandas
+gunicorn
+xgboost
