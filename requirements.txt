@@ -1,8 +1,8 @@
 flask
 pandas
 gunicorn
-sklearn.preprocessing
+sklearn
 joblib
 numpy
 keras
-tensorflow.keras.models
+tensorflow
