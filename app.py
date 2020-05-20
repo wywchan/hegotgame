@@ -1,11 +1,25 @@
 import flask
-import pickle
+from joblib import load
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error
 import pandas as pd
+import numpy as np
+from keras.models import Sequential
+from tensorflow.keras.models import model_from_json
+from keras.layers import Dense, Dropout
+from keras.metrics import RootMeanSquaredError
+from keras.callbacks import EarlyStopping
 
-# Use pickle to load in the pre-trained model.
-with open(f'model/bike_model_rf.pkl', 'rb') as f:
-    model = pickle.load(f)
+# Use joblib to load in the StandardScaler.
+sc = load('model/scaler.joblib')
 
+# Load train neural network.
+json_file = open('model/model.json', 'r')
+loaded_model_json = json_file.read()
+json_file.close()
+deploymodel = model_from_json(loaded_model_json)
+deploymodel.load_weights('model/deploymodelweights.h5')
+deploymodel.compile(loss='mse', optimizer = 'adam')
 app = flask.Flask(__name__, template_folder='templates')
 
 @app.route('/', methods=['GET', 'POST'])
@@ -13,16 +27,37 @@ def main():
     if flask.request.method == 'GET':
         return(flask.render_template('main.html'))
     if flask.request.method == 'POST':
-        temperature = flask.request.form['temperature']
-        humidity = flask.request.form['humidity']
-        windspeed = flask.request.form['windspeed']
-        input_variables = pd.DataFrame([[temperature, humidity, windspeed]],
-                                       columns=['temperature', 'humidity', 'windspeed'],
+        g = int(flask.request.form['g'])
+        ppg = float(flask.request.form['ppg'])
+        rpg = float(flask.request.form['rpg'])
+        apg = float(flask.request.form['apg'])
+        spg = float(flask.request.form['spg'])
+        bpg = float(flask.request.form['bpg'])
+        tov = float(flask.request.form['tov']) * g
+        ws = float(flask.request.form['ws'])
+        vorp = float(flask.request.form['vorp'])
+        pts = g * ppg
+        trb = g * rpg
+        ast = g * apg
+        stl = g * spg
+        blk = g * bpg
+        ppgx2 = ppg * ppg
+        ppg_pts = ppg * pts
+        input_variables = pd.DataFrame([[g,ppg,ppgx2, ppg_pts, trb, rpg, ast, apg, stl, spg, blk, bpg, tov, ws, vorp]],
+                                       columns=['g','ppg','ppg^2', 'ppg pts', 'trb', 'rpg', 'ast', 'apg', 'stl', 'spg', 'blk', 'bpg', 'tov', 'ws', 'vorp'],
                                        dtype=float)
-        prediction = model.predict(input_variables)[0]
+        input_variables_sc = sc.transform(input_variables)
+        prediction = deploymodel.predict(input_variables_sc)[0]
         return flask.render_template('main.html',
-                                     original_input={'Temperature':temperature,
-                                                     'Humidity':humidity,
-                                                     'Windspeed':windspeed},
-                                     result=prediction,
+                                     original_input={'Games':g,
+                                                     'Points Per Game':ppg,
+                                                     'Rebounds Per Game':rpg,
+                                                     'Assists Per Game':apg,
+                                                     'Steals Per Game':spg,
+                                                     'Blocks Per Game':bpg,
+                                                     'Turnovers Per Game':round(tov/g),
+                                                     'Winshares':ws,
+                                                     'Value Over Replacement Player':vorp,
+                                                     },
+                                     result=int(prediction),
                                      )

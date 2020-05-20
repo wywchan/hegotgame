@@ -12,19 +12,37 @@ form {
 }
 </style>
 <head>
-    <title>Bike Usage Model</title>
+    <title>He Got Game So Show Him The Money</title>
 </head>
 <form action="{{ url_for('main') }}" method="POST">
     <fieldset>
         <legend>Input values:</legend>
-        Temperature:
-        <input name="temperature" type="number" required>
+        Games played:
+        <input name="g" type="number" required>
         <br>
-        <br> Humidity:
-        <input name="humidity" type="number" required>
+        <br> Points Per Game:
+        <input name="ppg" type="number" required min = "0" step = ".1">
         <br>
-        <br> Windspeed:
-        <input name="windspeed" type="number" required>
+        <br> Rebounds Per Game:
+        <input name="rpg" type="number" required min = "0" step = ".1">
+        <br>
+        <br> Assists Per Game:
+        <input name="apg" type="number" required min = "0" step = ".1">
+        <br>
+        <br> Steals Per Game:
+        <input name="spg" type="number" required min = "0" step = ".1">
+        <br>
+        <br> Blocks Per Game:
+        <input name="bpg" type="number" required min = "0" step = ".1">
+        <br>
+        <br> Turnovers Per Game:
+        <input name="tov" type="number" required min = "0" step = ".1">
+        <br>
+        <br> Winshares:
+        <input name="ws" type="number" required step = ".1">
+        <br>
+        <br> Value Over Replacement Player:
+        <input name="vorp" type="number" required step = ".1">
         <br>
         <br>
         <input type="submit">
@@ -37,7 +55,7 @@ form {
             <b>{{ variable }}</b> : {{ value }}
         {% endfor %}
         <br>
-        <br> Predicted number of bikes in use:
+        <br> This player's salary should be:
            <p style="font-size:50px">{{ result }}</p>
     {% endif %}
 </div>
