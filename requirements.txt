@@ -5,3 +5,4 @@ sklearn.preprocessing
 joblib
 numpy
 keras
+tensorflow.keras.models
