@@ -1,7 +1,7 @@
 flask
 pandas
 gunicorn
-sklearn<=0.22.1
+sklearn==0.21.2
 joblib
 numpy
 tensorflow==2.0.2
