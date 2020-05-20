@@ -1,17 +1,19 @@
 import flask
 from joblib import load
-from sklearn.preprocessing import StandardScaler
+#from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
-from tensorflow.keras.models import Sequential
+from keras.models import Sequential
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.metrics import RootMeanSquaredError
 from tensorflow.keras.callbacks import EarlyStopping
 
 # Use joblib to load in the StandardScaler.
-sc = load('model/scaler.joblib')
+#sc = load('model/scaler.joblib') - disabled due to heroku versioning issue
+def scale_data(array, means = np.load('model/means.npy'), stds = np.load('model/vars.npy')**0.5):
+    return (array-means)/stds
 
 # Load train neural network.
 json_file = open('model/model.json', 'r')
@@ -46,7 +48,7 @@ def main():
         input_variables = pd.DataFrame([[g,ppg,ppgx2, ppg_pts, trb, rpg, ast, apg, stl, spg, blk, bpg, tov, ws, vorp]],
                                        columns=['g','ppg','ppg^2', 'ppg pts', 'trb', 'rpg', 'ast', 'apg', 'stl', 'spg', 'blk', 'bpg', 'tov', 'ws', 'vorp'],
                                        dtype=float)
-        input_variables_sc = sc.transform(input_variables)
+        input_variables_sc = scale_data(input_variables)
         prediction = deploymodel.predict(input_variables_sc)[0]
         return flask.render_template('main.html',
                                      original_input={'Games':g,
