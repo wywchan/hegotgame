@@ -57,7 +57,7 @@ def main():
                                                      'Assists Per Game':apg,
                                                      'Steals Per Game':spg,
                                                      'Blocks Per Game':bpg,
-                                                     'Turnovers Per Game':round(tov/g),
+                                                     'Turnovers Per Game':round(tov/g,1),
                                                      'Winshares':ws,
                                                      'Value Over Replacement Player':vorp,
                                                      },
