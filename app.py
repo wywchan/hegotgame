@@ -65,7 +65,7 @@ def main():
             commainsert2 = predlength - 6
             prediction = str("$" + prediction[0:commainsert2] + "," + prediction[-6:-3] + "," + prediction[-3:])
         else:
-            prediction = "This player likely does not exist in the NBA."
+            prediction = str("This player likely does not exist in the NBA.")
         return flask.render_template('main.html',
                                      original_input={'Games Played':g,
                                                      'Points Per Game':ppg,
