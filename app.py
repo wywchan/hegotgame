@@ -1,6 +1,6 @@
 import flask
-from joblib import load
-#from sklearn.preprocessing import StandardScaler
+# from joblib import load
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
@@ -11,7 +11,7 @@ from tensorflow.keras.metrics import RootMeanSquaredError
 from tensorflow.keras.callbacks import EarlyStopping
 
 # Use joblib to load in the StandardScaler.
-#sc = load('model/scaler.joblib') - disabled due to heroku versioning issue
+# sc = load('model/scaler.joblib') #- disabled due to heroku versioning issue
 def scale_data(array, means = np.load('model/means.npy'), stds = np.load('model/vars.npy')**0.5):
     return (array-means)/stds
 

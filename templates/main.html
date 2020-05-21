@@ -1,6 +1,37 @@
 <!doctype html>
 <html>
 <style>
+body {
+  /* background-image: url('https://i.imgur.com/iSTEDDm.png'); alternate background */
+  background-image: url('https://images.wsj.net/im-73810/IM');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+.header {
+  padding: 20px;
+  text-align: center;
+  background: #b30000;
+  color: white;
+  font-size: 18px;
+  ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=80);
+  -moz-opacity: 0.80;
+  -khtml-opacity: 0.8;
+  opacity: 0.8;
+}
+div.transbox {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.75;
+}
+
+div.transbox p {
+  margin: 5%;
+  font-weight: bold;
+  color: #000000;
+}
 form {
     margin: auto;
     width: 35%;
@@ -8,55 +39,63 @@ form {
 .result {
     margin: auto;
     width: 35%;
-    border: 1px solid #ccc;
+}
 }
 </style>
 <head>
     <title>He Got Game So Show Him The Money</title>
 </head>
+<div class="header">
+  <h1>He Got Game So Show Him The Money</h1>
+  <p>NBA Player Salary Predictor</p>
+</div>
 <form action="{{ url_for('main') }}" method="POST">
-    <fieldset>
-        <legend>Input values:</legend>
-        Games played:
-        <input name="g" type="number" required>
-        <br>
-        <br> Points Per Game:
-        <input name="ppg" type="number" required min = "0" step = ".1">
-        <br>
-        <br> Rebounds Per Game:
-        <input name="rpg" type="number" required min = "0" step = ".1">
-        <br>
-        <br> Assists Per Game:
-        <input name="apg" type="number" required min = "0" step = ".1">
-        <br>
-        <br> Steals Per Game:
-        <input name="spg" type="number" required min = "0" step = ".1">
-        <br>
-        <br> Blocks Per Game:
-        <input name="bpg" type="number" required min = "0" step = ".1">
-        <br>
-        <br> Turnovers Per Game:
-        <input name="tov" type="number" required min = "0" step = ".1">
-        <br>
-        <br> Winshares:
-        <input name="ws" type="number" required step = ".1">
-        <br>
-        <br> Value Over Replacement Player:
-        <input name="vorp" type="number" required step = ".1">
-        <br>
-        <br>
-        <input type="submit">
-    </fieldset>
+    <div class="transbox">
+      <fieldset>
+          <legend>Input values:</legend>
+          Games played:
+          <input name="g" type="number" required>
+          <br>
+          <br> Points Per Game:
+          <input name="ppg" type="number" required min = "0" step = ".1">
+          <br>
+          <br> Rebounds Per Game:
+          <input name="rpg" type="number" required min = "0" step = ".1">
+          <br>
+          <br> Assists Per Game:
+          <input name="apg" type="number" required min = "0" step = ".1">
+          <br>
+          <br> Steals Per Game:
+          <input name="spg" type="number" required min = "0" step = ".1">
+          <br>
+          <br> Blocks Per Game:
+          <input name="bpg" type="number" required min = "0" step = ".1">
+          <br>
+          <br> Turnovers Per Game:
+          <input name="tov" type="number" required min = "0" step = ".1">
+          <br>
+          <br> Winshares:
+          <input name="ws" type="number" required step = ".1">
+          <br>
+          <br> Value Over Replacement Player:
+          <input name="vorp" type="number" required step = ".1">
+          <br>
+          <br>
+          <input type="submit">
+        </fieldset>
+  </div>
 </form>
 <br>
 <div class="result" align="center">
-    {% if result %}
-        {% for variable, value in original_input.items() %}
-            <b>{{ variable }}</b> : {{ value }}
-        {% endfor %}
-        <br>
-        <br> This player's salary should be:
-           <p style="font-size:50px">{{ result }}</p>
-    {% endif %}
+    <div class="transbox">
+      {% if result %}
+          {% for variable, value in original_input.items() %}
+              <b>{{ variable }}</b> : {{ value }}
+          {% endfor %}
+          <br>
+          <br> This player's salary should be:
+             <p style="font-size:50px">{{ result }}</p>
+      {% endif %}
+    </div>
 </div>
 </html>
