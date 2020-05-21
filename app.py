@@ -1,6 +1,6 @@
 import flask
 # from joblib import load
-from sklearn.preprocessing import StandardScaler
+# from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
@@ -12,6 +12,8 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 # Use joblib to load in the StandardScaler.
 # sc = load('model/scaler.joblib') #- disabled due to heroku versioning issue
+
+#Workaround to manually create scaler using saved scaling attributes
 def scale_data(array, means = np.load('model/means.npy'), stds = np.load('model/vars.npy')**0.5):
     return (array-means)/stds
 
@@ -50,6 +52,20 @@ def main():
                                        dtype=float)
         input_variables_sc = scale_data(input_variables)
         prediction = deploymodel.predict(input_variables_sc)[0]
+        prediction = int(prediction)
+        if prediction < 1000000:
+            prediction = str(prediction)
+            predlength = len(prediction)
+            commainsert = predlength - 3
+            prediction = str("$" + prediction[0:commainsert] + "," + prediction[-3:])
+        elif prediction < 1000000000:
+            prediction = str(prediction)
+            predlength = len(prediction)
+            commainsert = predlength - 3
+            commainsert2 = predlength - 6
+            prediction = str("$" + prediction[0:commainsert2] + "," + prediction[-6:-3] + "," + prediction[-3:])
+        else:
+            prediction = "This player likely does not exist in the NBA."
         return flask.render_template('main.html',
                                      original_input={'Games Played':g,
                                                      'Points Per Game':ppg,
@@ -61,5 +77,5 @@ def main():
                                                      'Winshares':ws,
                                                      'Value Over Replacement Player':vorp,
                                                      },
-                                     result=int(prediction),
+                                     result=prediction,
                                      )
