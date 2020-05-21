@@ -51,7 +51,7 @@ def main():
         input_variables_sc = scale_data(input_variables)
         prediction = deploymodel.predict(input_variables_sc)[0]
         return flask.render_template('main.html',
-                                     original_input={'Games':g,
+                                     original_input={'Games Played':g,
                                                      'Points Per Game':ppg,
                                                      'Rebounds Per Game':rpg,
                                                      'Assists Per Game':apg,
