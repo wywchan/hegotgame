@@ -4,4 +4,4 @@ gunicorn
 sklearn
 joblib
 numpy
-tensorflow==2.0.2
+tensorflow==2.0.3
